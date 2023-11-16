@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { insertUser, getUserByEmail } = require("../model/user/User.model");
 const { hashPassword, comparePassword } = require("../helpers/bcrypt.helper");
+const { createAccessJWT, creatRefreshJWT } = require("../helpers/jwt.helper");
 
 router.all("/", (req, res, next) => {
     // res.json({ message: "return from user router" });
@@ -56,10 +57,18 @@ router.post("/login", async(req, res) => {
         return res.json({ status: "error", message: "Invalid email or password!" });
     }
 
+
     const result = await comparePassword(password, passFromDb);
     console.log(result);
 
-    res.json({ status: "success", message: "Login successfully" })
+    if (!result) {
+        res.json({ status: "error", message: "Invalid email or password!" });
+    }
+    
+    const accessJWT = await createAccessJWT(user.email, `${user._id}`);
+    const refrestJWT = await creatRefreshJWT(user.email, `${user._id}`);
+
+    res.json({ status: "success", message: "Login successfully" ,accessJWT, refrestJWT})
 });
 
 module.exports = router;
