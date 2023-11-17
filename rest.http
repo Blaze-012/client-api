@@ -1,4 +1,4 @@
-### user sing up endpoint
+### user sign up endpoint
 POST http://localhost:3001/v1/user
 Content-Type: application/json
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
     "password": "secret@123"
 }
 
-### user sing in endpoint
+### user sign in endpoint
 POST http://localhost:3001/v1/user/login
 Content-Type: application/json
 
@@ -19,4 +19,8 @@ Content-Type: application/json
     "password": "secret@123"
 }
 
+
+### Get a user profile endpoint
+GET http://localhost:3001/v1/user/
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiZUBtZS5jb20iLCJpYXQiOjE3MDAyMDI4NTksImV4cCI6MTcwMDIwMzc1OX0.uVIqFkvkVPs-W3rKWYnnKT3AnpkGJrmJvRrt6dXEoXo
 

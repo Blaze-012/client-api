@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { UserSchema } = require("../model/user/User.schema");
 const { storeUserRefreshJWT, storeUserAccessJWT } = require("../model/user/User.model");
 
 const createAccessJWT = async(email, _id) => {
@@ -30,9 +31,32 @@ const creatRefreshJWT = async (email, _id) => {
     }
 };
 
+
+const verifyAccessJWT = (userJWT) => {
+    try {
+        return Promise.resolve(jwt.verify(userJWT, process.env.JWT_ACCESS_SECRET))
+        
+    } catch (error) {
+        return Promise.reject(error)
+    }
+};
+
+const getAccessJWT = async (key) => {
+  try {
+      const user = await UserSchema.findOne({ 'accessJWT.token': key });
+      const userId = user?._id || null;
+      console.log("inside getAccess JWt: ",userId);
+    return Promise.resolve(user?._id || null);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 module.exports = {
     createAccessJWT,
     creatRefreshJWT,
+    verifyAccessJWT,
+    getAccessJWT,
 };
 
 
